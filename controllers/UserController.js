@@ -5,13 +5,24 @@ const {generateToken} = require('../helpers/jwt')
 class UserController {
     static register (req,res,next) {
         const {username,password} = req.body
-        User.create({username,password})
+        User.findOne({username})
+        .then(user => {
+            if (user){
+                throw {
+                    msg: 'username is already taken',
+                    statusCode: 401
+                }
+            }
+            else{
+                return User.create({username,password})
+            }
+        })
         .then(result => {
-            res.status(201).json(result)
+            let payload = {username:result.username}
+            let token = generateToken(payload)
+            res.status(201).json(token)
         })
-        .catch((err)=>{
-            next(err.message)
-        })
+        .catch(next)
     }
     static login (req,res,next) {
         const {username,password} = req.body
