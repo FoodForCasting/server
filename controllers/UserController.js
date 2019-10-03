@@ -1,13 +1,27 @@
 const User = require('../models/user')
 const {comparePassword} = require('../helpers/bcryptjs')
 const {generateToken} = require('../helpers/jwt')
+const {OAuth2Client} = require('google-auth-library');
 
 class UserController {
     static register (req,res,next) {
         const {username,password} = req.body
-        User.create({username,password})
+        User.findOne({username})
+        .then(user => {
+            if (user){
+                throw {
+                    msg: 'gunakan username lain',
+                    statusCode: 401
+                }
+            }
+            else{
+                return User.create({username,password})
+            }
+        })
         .then(result => {
-            res.status(201).json(result)
+            let payload = {username:result.username}
+            let token = generateToken(payload)
+            res.status(201).json(token)
         })
         .catch(next)
     }
@@ -27,6 +41,35 @@ class UserController {
             }
         })
         .catch(next)
+    }
+    static signGoogle(req, res, next){
+        const client = new OAuth2Client(process.env.CLIENT_ID);
+        let username = null
+        client.verifyIdToken({
+            idToken: req.body.id_token,
+            audience: process.env.GOOGLE
+        })
+            .then(ticket => {
+                let {name}= ticket.getPayload()
+                username = name
+                return User.findOne({username})
+            })
+            .then(user => {
+                if (user){
+                    const payload = {username}
+                    let token = generateToken(payload)
+                    res.status(201).json(token)
+                }
+                else{
+                    return User.create({username, password:"google"})
+                }
+            })
+            .then(result => {
+                let payload = {username:result.username}
+                let token = generateToken(payload)
+                res.status(201).json(token)
+            })
+            .catch(next)
     }
 }
 
