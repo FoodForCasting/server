@@ -9,7 +9,7 @@ class UserController {
         .then(result => {
             res.status(201).json(result)
         })
-        .catch(console.log)
+        .catch(next)
     }
     static login (req,res,next) {
         const {username,password} = req.body
@@ -20,10 +20,13 @@ class UserController {
                 let token = generateToken(payload)
                 res.status(200).json(token)
             } else {
-                throw 'invalid email/password'
+                throw {
+                    msg: 'invalid email/password',
+                    statusCode: 401
+                }
             }
         })
-        .catch(console.log)
+        .catch(next)
     }
 }
 
