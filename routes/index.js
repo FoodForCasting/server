@@ -1,8 +1,8 @@
 const router = require('express').Router()
 const avatarMiddleware = require('adorable-avatars')
-// router.get('/')
+const userRoutes = require('./userRoutes')
 
 router.use('/myAvatars',avatarMiddleware)
-
+router.use('/user',userRoutes)
 
 module.exports = router
