@@ -6,7 +6,8 @@ let Schema = mongoose.Schema
 
 let userSchema = new Schema({
     username: {type:String,required: 'username is required!'},
-    password: {type:String,required: 'password is required!'}
+    password: {type:String,required: 'password is required!'},
+    wishlist: []
 })
 
 userSchema.pre('save',function(next){

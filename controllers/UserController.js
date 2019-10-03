@@ -9,7 +9,9 @@ class UserController {
         .then(result => {
             res.status(201).json(result)
         })
-        .catch(next)
+        .catch((err)=>{
+            next(err.message)
+        })
     }
     static login (req,res,next) {
         const {username,password} = req.body
