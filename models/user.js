@@ -5,8 +5,8 @@ const {hashPassword} = require('../helpers/bcryptjs')
 let Schema = mongoose.Schema
 
 let userSchema = new Schema({
-    username: {type:String,required: 'username is required!'},
-    password: {type:String,required: 'password is required!'},
+    username: {type:String,required: [true, 'username is required']},
+    password: {type:String,required: [true, 'password is required']},
     wishlist: []
 })
 
