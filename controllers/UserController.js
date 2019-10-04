@@ -71,6 +71,25 @@ class UserController {
             })
             .catch(next)
     }
-}
+    static addWishlist(req, res, next){
+        console.log(req.loggedUser);
+        console.log(req.body);
+        
+        User.update({username:req.loggedUser.username} ,{"$push": { "wishlist": req.body }})
+            .then(data => {
+                console.log(data);
+                res.status(201).json(data)
+            })
+            .catch(next)
 
+    }
+    static allWishlist(req, res, next){
+        User.findOne({username:req.loggedUser.username})
+            .then(user => {
+                console.log(user.wishlist);
+                res.status(200).json(user.wishlist)
+            })
+            .catch(next)
+    }
+}
 module.exports = UserController
