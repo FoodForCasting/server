@@ -25,6 +25,9 @@ class UserController {
             res.status(201).json(token)
         })
         .catch(next)
+        // .catch(err =>{
+        //     next(err.message.slice(24))
+        // })
     }
     static login (req,res,next) {
         const {username,password} = req.body
