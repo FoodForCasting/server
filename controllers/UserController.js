@@ -5,6 +5,7 @@ const {OAuth2Client} = require('google-auth-library')
 
 class UserController {
     static register (req,res,next) {
+        console.log('masuuk')
         const {username,password} = req.body
         User.findOne({username})
         .then(user => {

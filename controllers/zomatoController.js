@@ -13,17 +13,27 @@ class Controller {
     }
 
     static search(req,res,next){
-        zomatoApi.get(`locations?query=${req.body.city}`)
-            .then(function ({data}){
-                let cityId = data.location_suggestions[0].entity_id
-                return zomatoApi.get(`search?entity_id=${cityId}&entity_type=city&count=12&sort=rating&q=${req.body.food}`)
-            })
-            .then( ({data}) => {
-                res.status(200).json(data)
-            })
-            .catch(err =>{
-                res.status(500).json(err)
-            })
+        if(!req.body.city){
+            zomatoApi.get(`search?entity_id=74&entity_type=city&count=12&q=${req.body.food}&cuisines=${req.body.food}&q=${req.body.food}`)
+                .then( ({data}) => {
+                    res.status(200).json(data)
+                })
+                .catch(err =>{
+                    res.status(500).json(err)
+                })
+        }else{
+            zomatoApi.get(`locations?query=${req.body.city}`)
+                .then(function ({data}){
+                    let cityId = data.location_suggestions[0].entity_id
+                    return zomatoApi.get(`search?entity_id=${cityId}&entity_type=city&count=12&cuisines=${req.body.food}&q=${req.body.food}`)
+                })
+                .then( ({data}) => {
+                    res.status(200).json(data)
+                })
+                .catch(err =>{
+                    res.status(500).json(err)
+                })
+        }
     }
 }
 
