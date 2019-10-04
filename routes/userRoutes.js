@@ -7,8 +7,9 @@ router.post('/register',UserController.register)
 router.post('/login',UserController.login)
 router.post('/signGoogle',UserController.signGoogle)
 router.patch('/addWishlist', authentication, authorization, UserController.addWishlist)
-router.get('/allWishlist',UserController.allWishlist)
-router.patch('/delWishlist',UserController.delWishlist)
+router.get('/allWishlist', authentication, UserController.allWishlist)
+router.patch('/delWishlist', authentication, authorization, UserController.delWishlist)
+router.get('/authentication', authentication, UserController.authentication)
 
 
 
