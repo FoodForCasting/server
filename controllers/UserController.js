@@ -102,6 +102,9 @@ class UserController {
             })
             .catch(next)
     }
+    static authentication(req, res, next){
+        res.status(200).json("token benar")
+    }
 }
 
 module.exports = UserController
