@@ -81,7 +81,7 @@ class UserController {
         User.update({username:req.loggedUser.username} ,{"$push": { "wishlist": req.body }})
             .then(data => {
                 console.log(data);
-                res.status(201).json(data)
+                res.status(200).json(data)
             })
             .catch(next)
 
@@ -91,6 +91,14 @@ class UserController {
             .then(user => {
                 console.log(user.wishlist);
                 res.status(200).json(user.wishlist)
+            })
+            .catch(next)
+    }
+    static delWishlist(req, res, next){
+        User.update({username:req.loggedUser.username}, {"$pullAll": { "wishlist": req.body }})
+            .then(data => {
+                console.log(data);
+                res.status(200).json(data)
             })
             .catch(next)
     }

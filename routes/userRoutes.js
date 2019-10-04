@@ -7,6 +7,7 @@ router.post('/login',UserController.login)
 router.post('/signGoogle',UserController.signGoogle)
 router.patch('/addWishlist', authentication, authorization, UserController.addWishlist)
 router.get('/allWishlist',UserController.allWishlist)
+router.patch('/delWishlist',UserController.delWishlist)
 
 
 module.exports = router
