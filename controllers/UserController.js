@@ -5,7 +5,7 @@ const {OAuth2Client} = require('google-auth-library')
 
 class UserController {
     static register (req,res,next) {
-        console.log('masuuk')
+        
         const {username,password} = req.body
         User.findOne({username})
         .then(user => {
@@ -75,8 +75,6 @@ class UserController {
             .catch(next)
     }
     static addWishlist(req, res, next){
-        console.log(req.loggedUser);
-        console.log(req.body);
 
         User.update({username:req.loggedUser.username} ,{"$push": { "wishlist": req.body }})
             .then(data => {
@@ -89,7 +87,6 @@ class UserController {
     static allWishlist(req, res, next){
         User.findOne({username:req.loggedUser.username})
             .then(user => {
-                console.log(user.wishlist);
                 res.status(200).json(user.wishlist)
             })
             .catch(next)

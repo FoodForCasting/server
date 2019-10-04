@@ -4,11 +4,7 @@ const User = require('../models/user')
 function authentication(req, res, next){
     try {
         let decodedToken = VerifyToken(req.headers.token)
-        console.log("testtttttttttttttttttttttttt");
-
         req.loggedUser = decodedToken
-        console.log(req.loggedUser);
-
         next()
     }
     catch {
